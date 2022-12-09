@@ -1,126 +1,138 @@
+#include <gtest/gtest.h>
 #include "class.hpp"
 
-int main(int argc, char **argv) {
-    if (argc < 2 || argc > 5) {
-        std::cerr << "Incorrect enter!" << std::endl;
-        return -1;
-    }
-    std::string university, sex, year, month, day;
-    if (strcmp(argv[1], "--tofile") == 0 && strcmp(argv[2], "--fromfile") == -1 && argc < 4) {
-        std::map <std::string, std::vector<int>> randomNumbers1;
-        std::map <std::string, std::vector<int>> randomNumbers2;
-        if (argc == 2) {
-            std::ofstream out("F");
-            while (std::cin >> university >> sex >> year >> month >> day) {
-                if (!CheckInformation(university, sex, year, month, day)) {
-                    std::cerr << "Wrong information, check your enter, please" << std::endl;
-                    return -2;
-                }
-                CorrectInformation(year, month, day);
-                if (university == "MIEM") {
-                    MIEM *a = new MIEM;
-                    out << a->generate(sex, year, month, day, randomNumbers1) << std::endl;
-                    delete a;
-                } else if (university == "MGTU") {
-                    MGTU *b = new MGTU;
-                    out << b->generate(sex, year, month, day, randomNumbers2) << std::endl;
-                    delete b;
-                }
-            }
-        } else {
-            std::ofstream out(argv[2]);
-            while (std::cin >> university >> sex >> year >> month >> day) {
-                if (!CheckInformation(university, sex, year, month, day)) {
-                    std::cerr << "Wrong information, check your enter, please" << std::endl;
-                    return -2;
-                }
-                CorrectInformation(year, month, day);
-                if (university == "MIEM") {
-                    MIEM *a = new MIEM;
-                    out << a->generate(sex, year, month, day, randomNumbers1) << std::endl;
-                    delete a;
-                } else if (university == "MGTU") {
-                    MGTU *b = new MGTU;
-                    out << b->generate(sex, year, month, day, randomNumbers2) << std::endl;
-                    delete b;
-                }
-            }
-        }
-    }
-    if (strcmp(argv[1], "--fromfile") == 0 && argc == 3) {
-        std::map <std::string, std::vector<int>> randomNumbers1;
-        std::map <std::string, std::vector<int>> randomNumbers2;
-        std::ifstream in(argv[2]);
-        while (in >> university >> sex >> year >> month >> day) {
-            if (!CheckInformation(university, sex, year, month, day)) {
-                std::cerr << "Wrong information, check your enter, please" << std::endl;
-                return -2;
-            }
-            CorrectInformation(year, month, day);
-            if (university == "MIEM") {
-                MIEM *a = new MIEM;
-                std::cout << a->generate(sex, year, month, day, randomNumbers1) << std::endl;
-                delete a;
-            } else if (university == "MGTU") {
-                MGTU *b = new MGTU;
-                std::cout << b->generate(sex, year, month, day, randomNumbers2) << std::endl;
-                delete b;
-            }
-        }
-    }
-    if (argc >= 3 && ((strcmp(argv[1], "--fromfile") == 0 && strcmp(argv[2], "--tofile") == 0) ||
-                      (strcmp(argv[2], "--fromfile") == 0 && strcmp(argv[1], "--tofile") == 0))) {
-        std::map <std::string, std::vector<int>> randomNumbers1;
-        std::map <std::string, std::vector<int>> randomNumbers2;
-        std::vector <std::string> vec;
-        if (argc == 3) {
-            std::ifstream inOut("F");
-            while (inOut >> university >> sex >> year >> month >> day) {
-                if (!CheckInformation(university, sex, year, month, day)) {
-                    std::cerr << "Wrong information, check your enter, please" << std::endl;
-                    return -2;
-                }
-                CorrectInformation(year, month, day);
-                if (university == "MIEM") {
-                    MIEM *a = new MIEM;
-                    vec.push_back(a->generate(sex, year, month, day, randomNumbers1));
-                    delete a;
-                } else if (university == "MGTU") {
-                    MGTU *b = new MGTU;
-                    vec.push_back(b->generate(sex, year, month, day, randomNumbers2));
-                    delete b;
-                }
-            }
-        } else {
-            std::ifstream inOut(argv[3]);
-            while (inOut >> university >> sex >> year >> month >> day) {
-                if (!CheckInformation(university, sex, year, month, day)) {
-                    std::cerr << "Wrong information, check your enter, please" << std::endl;
-                    return -2;
-                }
-                CorrectInformation(year, month, day);
-                if (university == "MIEM") {
-                    MIEM *a = new MIEM;
-                    vec.push_back(a->generate(sex, year, month, day, randomNumbers1));
-                    delete a;
-                } else if (university == "MGTU") {
-                    MGTU *b = new MGTU;
-                    vec.push_back(b->generate(sex, year, month, day, randomNumbers2));
-                    delete b;
-                }
-            }
-        }
-        if (argc == 4) {
-            std::ofstream inOut(argv[3]);
-            for (size_t i = 0; i < vec.size(); ++i) {
-                inOut << vec[i] << std::endl;
-            }
-        } else {
-            std::ofstream inOut("F");
-            for (size_t i = 0; i < vec.size(); ++i) {
-                inOut << vec[i] << std::endl;
-            }
-        }
-    }
-    return 0;
+TEST(Generator_MGTU, Check
+) {
+MGTU *a = new MGTU;
+std::map<std::string, std::vector<int>> randomNumbers;
+std::string sex = "man";
+std::string year = "2022";
+std::string month = "12";
+std::string day = "8";
+CorrectInformation(year, month, day);
+std::string result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("22022120863838", result);
+sex = "man";
+year = "1054";
+month = "3";
+day = "2";
+CorrectInformation(year, month, day);
+result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("21054030248860", result);
+sex = "woman";
+year = "2000";
+month = "03";
+day = "30";
+CorrectInformation(year, month, day);
+result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("12000033077772", result);
+sex = "woman";
+year = "1980";
+month = "01";
+day = "25";
+CorrectInformation(year, month, day);
+result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("11980012529154", result);
+delete
+a;
 }
+TEST(Generator_MIEM, Check
+) {
+MIEM *a = new MIEM;
+std::map<std::string, std::vector<int>> randomNumbers;
+std::string sex = "man";
+std::string year = "2022";
+std::string month = "12";
+std::string day = "09";
+CorrectInformation(year, month, day);
+std::string result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("820221209223624", result);
+sex = "man";
+year = "1054";
+month = "3";
+day = "2";
+CorrectInformation(year, month, day);
+result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("810540302500271", result);
+sex = "woman";
+year = "2000";
+month = "03";
+day = "30";
+CorrectInformation(year, month, day);
+result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("420000330186901", result);
+sex = "woman";
+year = "1980";
+month = "01";
+day = "25";
+CorrectInformation(year, month, day);
+result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("419800125300599", result);
+delete
+a;
+}
+
+TEST(Generator_MIEM, SameBirth
+) {
+MIEM *a = new MIEM;
+std::map<std::string, std::vector<int>> randomNumbers;
+std::string sex = "man";
+std::string year = "2022";
+std::string month = "12";
+std::string day = "09";
+CorrectInformation(year, month, day);
+std::string result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("820221209177637", result);
+sex = "man";
+year = "2022";
+month = "12";
+ day = "09";
+ CorrectInformation(year, month, day);
+result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("820221209705406", result);
+sex = "man";
+year = "2022";
+month = "12";
+day = "09";
+CorrectInformation(year, month, day);
+result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("820221209857360", result);
+delete
+a;
+}
+TEST(Generator_MGTU, SameBirth
+) {
+MGTU *a = new MGTU;
+std::map<std::string, std::vector<int>> randomNumbers;
+std::string sex = "man";
+std::string year = "2022";
+std::string month = "12";
+std::string day = "09";
+CorrectInformation(year, month, day);
+std::string result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("22022120957938", result);
+sex = "man";
+year = "2022";
+month = "12";
+ day = "09";
+ CorrectInformation(year, month, day);
+result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("22022120933861", result);
+sex = "man";
+year = "2022";
+month = "12";
+day = "09";
+CorrectInformation(year, month, day);
+result = a->generate(sex, year, month, day, randomNumbers);
+EXPECT_EQ("22022120944217", result);
+delete
+a;
+}
+
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+
+    return RUN_ALL_TESTS();
+}
+
+

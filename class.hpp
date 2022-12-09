@@ -1,5 +1,5 @@
-#ifndef UNTITLED_CLASS_HPP
-#define UNTITLED_CLASS_HPP
+#ifndef LABA6GTEST_CLASS_HPP
+#define LABA6GTEST_CLASS_HPP
 
 #include <iostream>
 #include <map>
@@ -10,7 +10,7 @@
 
 class Student_Ticket_Generator {
 public:
-    virtual int Summurise(const std::string &str) final {
+     int Summurise(const std::string &str)  {
         int sum = 0;
         for (size_t i = 0; i < str.size(); ++i) {
             char c = str[i];
@@ -19,7 +19,7 @@ public:
         return sum;
     }
 
-    virtual int Random(int min, int max) final {
+     int Random(int min, int max) {
         return min + std::rand() % (max - min);
     }
 
@@ -67,9 +67,9 @@ public:
         std::string s =
                 gender + (year) + (month) + (day) + std::to_string(number);
         int Sum = Summurise(s);
-        for (size_t i = 0; i < 10; ++i) {
-            if ((Sum + i*14) % 11 == 0) {
-                s = s + std::to_string(i);
+        for (int i = 0; i < 10; ++i) {
+            if ((Sum + i) % 11 == 0) {
+                std::cout << (s) << std::endl;
                 break;
             }
         }
@@ -112,8 +112,8 @@ public:
         std::string s =
                 gender + (year) + (month) + (day) + std::to_string(number);
         int Sum = Summurise(s);
-        for (size_t i = 0; i < 10; ++i) {
-            if ((Sum + i*15) % 11 == 0) {
+        for (int i = 0; i < 10; ++i) {
+            if ((Sum + i) % 11 == 0) {
                 s = s + std::to_string(i);
                 break;
             }
@@ -127,4 +127,4 @@ void CorrectInformation(std::string &year, std::string &month, std::string &day)
 bool
 CheckInformation(std::string &university, std::string &sex, std::string &year, std::string &month, std::string &day);
 
-#endif //UNTITLED_CLASS_HPP
+#endif //LABA6GTEST_CLASS_HPP
