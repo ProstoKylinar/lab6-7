@@ -34,7 +34,7 @@ public:
 
 class MGTU : public virtual Student_Ticket_Generator {
 public:
-    virtual int
+    int
     Generate_random_number(std::string &year, std::string &month, std::string &day,
                            std::map <std::string, std::vector<int>> &randomNumbers) override {
         std::string s = (year) + (month) + (day);
@@ -54,7 +54,7 @@ public:
         return number;
     }
 
-    virtual std::string
+    std::string
     generate(std::string &sex, std::string &year, std::string &month, std::string &day,
              std::map <std::string, std::vector<int>> &randomNumbers) override {
         std::string gender;
@@ -69,7 +69,7 @@ public:
         int Sum = Summurise(s);
         for (int i = 0; i < 10; ++i) {
             if ((Sum + i) % 11 == 0) {
-                std::cout << (s) << std::endl;
+                s = s + std::to_string(i);
                 break;
             }
         }
@@ -79,7 +79,7 @@ public:
 
 class MIEM : public virtual Student_Ticket_Generator {
 public:
-    virtual int
+    int
     Generate_random_number(std::string &year, std::string &month, std::string &day,
                            std::map <std::string, std::vector<int>> &randomNumbers) override {
         std::string s = (year) + (month) + (day);
@@ -99,7 +99,7 @@ public:
         return number;
     }
 
-    virtual std::string
+    std::string
     generate(std::string &sex, std::string &year, std::string &month, std::string &day,
              std::map <std::string, std::vector<int>> &randomNumbers) override {
         std::string gender;
@@ -122,6 +122,18 @@ public:
     }
 };
 
+struct Generator {
+    Student_Ticket_Generator* generator(std::string university) {
+        if (university == "MGTU") {
+            MGTU *a = new MGTU;
+            return a;
+        } else if (university == "MIEM") {
+            MIEM *a = new MIEM;
+            return a;
+        }
+        return nullptr;
+    }
+};
 void CorrectInformation(std::string &year, std::string &month, std::string &day);
 
 bool
